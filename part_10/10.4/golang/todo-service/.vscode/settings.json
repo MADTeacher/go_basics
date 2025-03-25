@@ -1,0 +1,5 @@
+{
+    "yaml.schemas": {
+        "swaggerviewer:openapi": "file:///e%3A/code/golang/todo-service/todo-service-api.yml"
+    }
+}
