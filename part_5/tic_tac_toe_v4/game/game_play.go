@@ -4,11 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	b "tic-tac-toe/board"
 	p "tic-tac-toe/player"
 )
 
-// Play запускает игровой цикл
 func (g *Game) Play() bool {
 	fmt.Println("For saving the game enter: save filename")
 	fmt.Println("For exiting the game enter : q")
@@ -26,13 +24,10 @@ func (g *Game) Play() bool {
 			// Применяем ход компьютера к доске
 			g.Board.SetSymbol(row, col, g.CurrentPlayer.GetFigure())
 		} else {
-			// Если ход человека, запрашиваем ввод
-			figure := g.CurrentPlayer.GetFigure()
-			if figure == b.Cross {
-				fmt.Print("X move: ")
-			} else {
-				fmt.Print("O move: ")
-			}
+			fmt.Printf(
+				"%s's turn. Enter row and column (e.g. 1 2): ",
+				g.CurrentPlayer.GetSymbol(),
+			)
 
 			// Читаем ввод пользователя
 			input, _ := g.Reader.ReadString('\n')
@@ -96,9 +91,9 @@ func (g *Game) Play() bool {
 	return g.State != quit
 }
 
-// saveCheck проверяет, является ли ввод командой сохранения
+// Проверяем, являются ли введенные данные командой на сохранение
 func (g *Game) saveCheck(input string) bool {
-	// Проверяем, если пользователь ввёл только "save" без имени файла
+	// Проверяем, если пользователь ввел только "save" без имени файла
 	if input == "save" {
 		fmt.Println("Error: missing filename. " +
 			"Please use the format: save filename")

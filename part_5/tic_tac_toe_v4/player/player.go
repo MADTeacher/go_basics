@@ -1,4 +1,4 @@
-package game
+package player
 
 import (
 	"bufio"
@@ -8,18 +8,20 @@ import (
 	b "tic-tac-toe/board"
 )
 
-// HumanPlayer представляет игрока-человека
+// Структура для представления игрока-человека
 type HumanPlayer struct {
 	Figure b.BoardField  `json:"figure"`
 	Reader *bufio.Reader `json:"-"`
 }
 
-// NewHumanPlayer создает нового игрока-человека
-func NewHumanPlayer(figure b.BoardField, reader *bufio.Reader) *HumanPlayer {
+func NewHumanPlayer(
+	figure b.BoardField,
+	reader *bufio.Reader,
+) *HumanPlayer {
 	return &HumanPlayer{Figure: figure, Reader: reader}
 }
 
-// GetSymbol возвращает символ игрока
+// Возвращаем символ игрока
 func (p *HumanPlayer) GetSymbol() string {
 	if p.Figure == b.Cross {
 		return "X"
@@ -27,7 +29,7 @@ func (p *HumanPlayer) GetSymbol() string {
 	return "O"
 }
 
-// SwitchPlayer изменяет фигуру текущего игрока
+// Изменяем фигуру текущего игрока
 func (p *HumanPlayer) SwitchPlayer() {
 	if p.Figure == b.Cross {
 		p.Figure = b.Nought
@@ -36,30 +38,20 @@ func (p *HumanPlayer) SwitchPlayer() {
 	}
 }
 
-// GetFigure возвращает текущую фигуру игрока
+// Возвращаем текущую фигуру игрока
 func (p *HumanPlayer) GetFigure() b.BoardField {
 	return p.Figure
 }
 
-// MakeMove обрабатывает строку ввода от человека и преобразует её в координаты хода
-// input - строка ввода в формате "1 2"
+// Метод-заглушка, т.к. ввод игрока осуществляется на
+// уровне пакета game, где нужно еще отрабатывать
+// команду на выход и сохранение игровой сессии
 func (p *HumanPlayer) MakeMove(board *b.Board) (int, int, bool) {
-	fmt.Printf(
-		"%s's turn. Enter row and column (e.g. 1 2): ",
-		p.GetSymbol(),
-	)
-
-	input, err := p.Reader.ReadString('\n')
-	input = strings.TrimSpace(input)
-	if err != nil {
-		fmt.Println("Invalid input. Please try again.")
-		return -1, -1, false
-	}
-
-	return p.ParseMove(input, board)
+	return -1, -1, false
 }
 
-// ParseMove обрабатывает строку ввода от человека и преобразует её в координаты хода
+// Обрабатываем строку ввода и
+// преобразуем ее в координаты хода
 func (p *HumanPlayer) ParseMove(
 	input string,
 	board *b.Board,
@@ -79,26 +71,11 @@ func (p *HumanPlayer) ParseMove(
 		return -1, -1, false
 	}
 
-	// Преобразуем введенные координаты (начиная с 1) в индексы массива (начиная с 0)
+	// Преобразуем введенные координаты (начиная с 1)
+	// в индексы массива (начиная с 0)
 	return row - 1, col - 1, true
 }
 
-// IsComputer возвращает false для человека-игрока
 func (p *HumanPlayer) IsComputer() bool {
 	return false
-}
-
-// Для обратной совместимости
-type Player HumanPlayer
-
-func NewPlayer() *Player {
-	return (*Player)(NewHumanPlayer(b.Cross, nil))
-}
-
-func (p *Player) SwitchPlayer() {
-	(*HumanPlayer)(p).SwitchPlayer()
-}
-
-func (p *Player) GetSymbol() string {
-	return (*HumanPlayer)(p).GetSymbol()
 }

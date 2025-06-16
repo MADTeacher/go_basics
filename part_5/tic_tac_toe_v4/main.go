@@ -24,8 +24,7 @@ func main() {
 		input = strings.TrimSpace(input)
 
 		switch input {
-		case "1":
-			// Загрузка сохраненной игры
+		case "1": // Загрузка сохраненной игры
 			loadedGame := &game.Game{}
 
 			for {
@@ -51,9 +50,9 @@ func main() {
 			// Запускаем игру
 			loadedGame.Play()
 
-		case "2":
-			// Создаем новую игру с помощью диалога настройки
-			newGame := game.SetupGame(reader, gameStorage.(storage.IGameSaver))
+		case "2": // Создаем новую игру с помощью диалога настройки
+			newGame := game.SetupGame(reader,
+				gameStorage.(storage.IGameSaver))
 
 			// Запускаем игру
 			newGame.Play()

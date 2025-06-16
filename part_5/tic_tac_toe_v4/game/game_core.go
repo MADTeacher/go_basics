@@ -7,12 +7,13 @@ import (
 	s "tic-tac-toe/storage"
 )
 
-// Game представляет состояние игры "Крестики-нолики"
 type Game struct {
-	Board         *b.Board      `json:"board"`
-	Player        p.IPlayer     `json:"player"`
-	Player2       p.IPlayer     `json:"-"` // Не сериализуется напрямую
-	CurrentPlayer p.IPlayer     `json:"-"` // Не сериализуется напрямую
+	Board  *b.Board  `json:"board"`
+	Player p.IPlayer `json:"player"`
+	// Не сериализуется напрямую
+	Player2 p.IPlayer `json:"-"`
+	// Не сериализуется напрямую
+	CurrentPlayer p.IPlayer     `json:"-"`
 	Reader        *bufio.Reader `json:"-"`
 	State         GameState     `json:"state"`
 	Saver         s.IGameSaver  `json:"-"`
@@ -24,7 +25,7 @@ type Game struct {
 	IsCurrentFirst bool `json:"is_current_first"`
 }
 
-// NewGame создает новую игру
+// Создаем новую игру
 func NewGame(board b.Board, reader *bufio.Reader, saver s.IGameSaver,
 	mode GameMode, difficulty p.Difficulty) *Game {
 	// Создаем первого игрока (всегда человек на X)
@@ -53,7 +54,7 @@ func NewGame(board b.Board, reader *bufio.Reader, saver s.IGameSaver,
 	}
 }
 
-// switchCurrentPlayer переключает активного игрока
+// Переключаем активного игрока
 func (g *Game) switchCurrentPlayer() {
 	if g.CurrentPlayer == g.Player {
 		g.CurrentPlayer = g.Player2
@@ -62,7 +63,7 @@ func (g *Game) switchCurrentPlayer() {
 	}
 }
 
-// updateState обновляет состояние игры на основе текущей доски
+// Обновляем состояние игры
 func (g *Game) updateState() {
 	if g.Board.CheckWin(g.CurrentPlayer.GetFigure()) {
 		if g.CurrentPlayer.GetFigure() == b.Cross {

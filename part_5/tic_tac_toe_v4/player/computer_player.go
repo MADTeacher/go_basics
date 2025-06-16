@@ -1,4 +1,4 @@
-package game
+package player
 
 import (
 	"fmt"
@@ -16,14 +16,14 @@ const (
 	Hard
 )
 
-// ComputerPlayer представляет игрока-компьютера
+// Структура для представления игрока-компьютера
 type ComputerPlayer struct {
 	Figure     b.BoardField `json:"figure"`
 	Difficulty Difficulty   `json:"difficulty"`
 	rand       *rand.Rand
 }
 
-// NewComputerPlayer создает нового игрока-компьютера с заданным уровнем сложности
+// Создаем нового игрока-компьютера с заданным уровнем сложности
 func NewComputerPlayer(
 	figure b.BoardField,
 	difficulty Difficulty,
@@ -36,7 +36,6 @@ func NewComputerPlayer(
 	}
 }
 
-// GetSymbol возвращает символ игрока
 func (p *ComputerPlayer) GetSymbol() string {
 	if p.Figure == b.Cross {
 		return "X"
@@ -44,7 +43,6 @@ func (p *ComputerPlayer) GetSymbol() string {
 	return "O"
 }
 
-// SwitchPlayer изменяет фигуру текущего игрока
 func (p *ComputerPlayer) SwitchPlayer() {
 	if p.Figure == b.Cross {
 		p.Figure = b.Nought
@@ -53,17 +51,15 @@ func (p *ComputerPlayer) SwitchPlayer() {
 	}
 }
 
-// GetFigure возвращает текущую фигуру игрока
 func (p *ComputerPlayer) GetFigure() b.BoardField {
 	return p.Figure
 }
 
-// IsComputer возвращает true для компьютера
 func (p *ComputerPlayer) IsComputer() bool {
 	return true
 }
 
-// MakeMove реализует ход компьютера в зависимости от выбранной сложности
+// Реализуем ход компьютера в зависимости от выбранной сложности
 func (p *ComputerPlayer) MakeMove(board *b.Board) (int, int, bool) {
 	fmt.Printf("%s (Computer) making move... ", p.GetSymbol())
 

@@ -9,14 +9,15 @@ import (
 	s "tic-tac-toe/storage"
 )
 
-// PrepareForSave подготавливает игру к сохранению
-func (g *Game) PrepareForSave() {
+// Подготавливаем игру к сохранению
+func (g *Game) prepareForSave() {
 	// Устанавливаем флаг текущего игрока
 	g.IsCurrentFirst = (g.CurrentPlayer == g.Player)
 }
 
+// Возвращаем снапшот игровой сессии
 func (g *Game) gameSnapshot() *m.GameSnapshot {
-	g.PrepareForSave()
+	g.prepareForSave()
 	return &m.GameSnapshot{
 		Board:          g.Board,
 		PlayerFigure:   g.Player.GetFigure(),
@@ -27,6 +28,7 @@ func (g *Game) gameSnapshot() *m.GameSnapshot {
 	}
 }
 
+// Восстанавливаем игру из снапшота
 func (g *Game) RestoreFromSnapshot(
 	snapshot *m.GameSnapshot,
 	reader *bufio.Reader,
@@ -47,7 +49,7 @@ func (g *Game) RestoreFromSnapshot(
 	g.recreatePlayersAfterLoad(reader)
 }
 
-// RecreatePlayersAfterLoad восстанавливает объекты игроков после загрузки из JSON
+// Восстанавливаем объекты игроков после загрузки из JSON
 func (g *Game) recreatePlayersAfterLoad(reader *bufio.Reader) {
 	// Создаем игроков в зависимости от режима игры
 	if g.Player == nil {

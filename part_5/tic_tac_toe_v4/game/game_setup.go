@@ -10,7 +10,7 @@ import (
 	s "tic-tac-toe/storage"
 )
 
-// SetupGame создает новую игру с пользовательскими настройками
+// Создаем новую игру с пользовательскими настройками
 func SetupGame(reader *bufio.Reader, saver s.IGameSaver) *Game {
 	// Запрашиваем размер игрового поля
 	size := getBoardSize(reader)
@@ -31,7 +31,7 @@ func SetupGame(reader *bufio.Reader, saver s.IGameSaver) *Game {
 	return NewGame(board, reader, saver, mode, difficulty)
 }
 
-// getBoardSize запрашивает у пользователя размер доски
+// Запрашиваем у пользователя размер доски
 func getBoardSize(reader *bufio.Reader) int {
 	size := b.BoardDefaultSize
 	var err error
@@ -58,7 +58,7 @@ func getBoardSize(reader *bufio.Reader) int {
 	}
 }
 
-// getGameMode запрашивает у пользователя режим игры
+// Запрашиваем у пользователя режим игры
 func getGameMode(reader *bufio.Reader) GameMode {
 	for {
 		fmt.Println("Choose game mode:")
@@ -85,7 +85,7 @@ func getGameMode(reader *bufio.Reader) GameMode {
 	}
 }
 
-// getDifficulty запрашивает у пользователя уровень сложности компьютера
+// Запрашиваем у пользователя уровень сложности компьютера
 func getDifficulty(reader *bufio.Reader) p.Difficulty {
 	for {
 		fmt.Println("Choose computer difficulty:")

@@ -1,8 +1,8 @@
-package game
+package player
 
 import b "tic-tac-toe/board"
 
-// IPlayer представляет интерфейс для любого игрока (человека или компьютера)
+// Интерфейс для любого игрока, будь то человек или компьютер
 type IPlayer interface {
 	// Получение символа игрока (X или O)
 	GetSymbol() string
