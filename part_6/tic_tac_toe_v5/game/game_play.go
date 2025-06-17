@@ -9,7 +9,7 @@ import (
 	p "tic-tac-toe/player"
 )
 
-func (g *Game) Play() bool {
+func (g *Game) Play() {
 	fmt.Println("For saving the game enter: save filename")
 	fmt.Println("For exiting the game enter : q")
 	fmt.Println("For making a move enter: row col")
@@ -93,9 +93,9 @@ func (g *Game) Play() bool {
 		winner = "Draw"
 	}
 
-	g.saveFinishedGame(winner)
-	// Возвращаем true, если игра закончилась нормально (не выходом)
-	return g.State != quit
+	if winner != "" {
+		g.saveFinishedGame(winner)
+	}
 }
 
 // Сохраняем результат завершенной игры
@@ -110,8 +110,6 @@ func (g *Game) saveFinishedGame(winner string) {
 		return
 	}
 
-	// Определяем победителя
-
 	// Создаем снапшот
 	finishSnapshot := &model.FinishGameSnapshot{
 		Board:          g.Board,
@@ -122,7 +120,8 @@ func (g *Game) saveFinishedGame(winner string) {
 	}
 
 	// Сохраняем в базу данных
-	if err := g.repository.SaveFinishedGame(finishSnapshot); err != nil {
+	err := g.repository.SaveFinishedGame(finishSnapshot)
+	if err != nil {
 		fmt.Printf("Error saving game result: %v\n", err)
 	}
 }
@@ -153,13 +152,17 @@ func (g *Game) saveCheck(input string) bool {
 
 		exist, _ := g.repository.IsSnapshotExist(filename, nickName)
 		if exist {
-			fmt.Println("Snapshot already exists. Please choose another name.")
+			fmt.Println(
+				"Snapshot already exists. Please choose another name.",
+			)
 			return false
 		}
 
 		shapshot := g.gameSnapshot()
 		shapshot.SnapshotName = filename
-		if err := g.repository.SaveSnapshot(shapshot, nickName); err != nil {
+
+		err := g.repository.SaveSnapshot(shapshot, nickName)
+		if err != nil {
 			fmt.Printf("Error saving game: %v\n", err)
 			return false
 		}

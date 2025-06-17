@@ -2,10 +2,14 @@ package database
 
 import "time"
 
+// Player представляет модель таблицы
+// для хранения профилей игроков в БД
 type Player struct {
 	NickName string `gorm:"primary_key;not null"`
 }
 
+// PlayerFinishGame представляет модель таблицы
+// для хранения завершенной игры в БД
 type PlayerFinishGame struct {
 	ID             int       `gorm:"primary_key;autoIncrement;not null"`
 	WinnerName     string    `gorm:"not null"`
@@ -16,7 +20,8 @@ type PlayerFinishGame struct {
 	Player         *Player   `gorm:"foreignKey:PlayerNickName;references:NickName"`
 }
 
-// GameSnapshot представляет модель для хранения снапшота игры в БД
+// GameSnapshot представляет модель таблицы
+// для хранения снапшота игры в БД
 type GameSnapshot struct {
 	ID             int     `gorm:"primaryKey;autoIncrement;not null"`
 	SnapshotName   string  `gorm:"not null"`

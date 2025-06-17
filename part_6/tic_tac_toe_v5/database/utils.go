@@ -8,14 +8,18 @@ import (
 	p "tic-tac-toe/player"
 )
 
+// Задаем имя таблицы для структуры Player
 func (p *Player) TableName() string {
 	return "players"
 }
 
+// Задаем имя таблицы для структуры PlayerFinishGame
 func (pfg *PlayerFinishGame) TableName() string {
 	return "player_finish_games"
 }
 
+// Преобразуем таблицу PlayerFinishGame в модель PlayerFinishGame
+// из пакета model
 func (f *PlayerFinishGame) ToModel() (*m.FinishGameSnapshot, error) {
 	var board b.Board
 	if err := json.Unmarshal(f.BoardJSON, &board); err != nil {
@@ -31,12 +35,14 @@ func (f *PlayerFinishGame) ToModel() (*m.FinishGameSnapshot, error) {
 	}, nil
 }
 
+// Задаем имя таблицы для структуры GameSnapshot
 func (g *GameSnapshot) TableName() string {
 	return "game_snapshots"
 }
 
+// Преобразуем таблицу GameSnapshot в модель GameSnapshot
+// из пакета model
 func (gs *GameSnapshot) ToModel() (*m.GameSnapshot, error) {
-	// Десериализуем BoardJSON в структуру Board
 	var board b.Board
 	if err := json.Unmarshal(gs.BoardJSON, &board); err != nil {
 		return nil, err

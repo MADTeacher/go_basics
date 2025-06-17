@@ -10,6 +10,7 @@ import (
 	"tic-tac-toe/game"
 )
 
+// Загрузка сохраненной игры
 func loadGame(reader *bufio.Reader, repository database.IRepository) {
 	loadedGame := &game.Game{}
 
@@ -18,6 +19,7 @@ func loadGame(reader *bufio.Reader, repository database.IRepository) {
 		nickName, _ := reader.ReadString('\n')
 		nickName = strings.TrimSpace(nickName)
 
+		// Получаем все снапшоты игрока
 		snapshote, err := repository.GetSnapshots(nickName)
 		if err != nil {
 			fmt.Println("Error loading game: ", err)
@@ -71,6 +73,7 @@ func loadGame(reader *bufio.Reader, repository database.IRepository) {
 			fmt.Println("└────────┴────────────────┴─────────┴─────────┴────────────┘")
 		}
 
+		// Запрашиваем номер снапшота
 		snapID := -1
 		for {
 			fmt.Print("Enter snapshot number: ")
@@ -96,11 +99,15 @@ func loadGame(reader *bufio.Reader, repository database.IRepository) {
 	loadedGame.Play()
 }
 
-func showFinishedGames(reader *bufio.Reader, repository database.IRepository) {
+// Показать все завершенную игру
+func showFinishedGames(
+	reader *bufio.Reader, repository database.IRepository,
+) {
 	fmt.Print("Enter nickname: ")
 	nickName, _ := reader.ReadString('\n')
 	nickName = strings.TrimSpace(nickName)
 
+	// Получаем все завершенные игры
 	finishedGames, err := repository.GetFinishedGames(nickName)
 	if err != nil {
 		fmt.Println("Error loading finished games: ", err)
@@ -134,6 +141,8 @@ func showFinishedGames(reader *bufio.Reader, repository database.IRepository) {
 		}
 		fmt.Println("└────────┴─────────┴────────────┴────────────────┘")
 	}
+
+	// Запрашиваем номер игры
 	snapID := -1
 	for {
 		fmt.Print("Enter snapshot number: ")
@@ -147,6 +156,7 @@ func showFinishedGames(reader *bufio.Reader, repository database.IRepository) {
 		break
 	}
 
+	// Выводим выбранную игру
 	chosenGame := (*finishedGames)[snapID]
 	chosenGame.Board.PrintBoard()
 	fmt.Println()

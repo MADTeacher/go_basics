@@ -49,7 +49,7 @@ func (g *Game) RestoreFromSnapshot(
 	g.recreatePlayersAfterLoad(reader)
 }
 
-// Восстанавливаем объекты игроков после загрузки из JSON
+// Восстанавливаем объекты игроков после загрузки снапшота
 func (g *Game) recreatePlayersAfterLoad(reader *bufio.Reader) {
 	// Создаем игроков в зависимости от режима игры
 	if g.Player == nil {

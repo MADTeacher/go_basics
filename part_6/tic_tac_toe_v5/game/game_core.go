@@ -26,8 +26,11 @@ type Game struct {
 }
 
 // Создаем новую игру
-func NewGame(board b.Board, reader *bufio.Reader, repository db.IRepository,
-	mode GameMode, difficulty p.Difficulty) *Game {
+func NewGame(
+	board b.Board, reader *bufio.Reader,
+	repository db.IRepository,
+	mode GameMode, difficulty p.Difficulty,
+) *Game {
 	// Создаем первого игрока (всегда человек на X)
 	player1 := p.NewHumanPlayer(b.Cross, reader)
 
