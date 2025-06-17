@@ -1,10 +1,10 @@
-package game
+package board
 
 type BoardField int
 
 // фигуры в клетке поля
 const (
-	empty BoardField = iota
-	cross
-	nought
+	Empty BoardField = iota
+	Cross
+	Nought
 )

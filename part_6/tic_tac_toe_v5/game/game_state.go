@@ -10,3 +10,11 @@ const (
 	noughtWin
 	quit
 )
+
+// Режим игры
+type GameMode int
+
+const (
+	PlayerVsPlayer GameMode = iota
+	PlayerVsComputer
+)

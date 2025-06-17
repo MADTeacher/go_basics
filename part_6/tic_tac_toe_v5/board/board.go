@@ -1,4 +1,4 @@
-package game
+package board
 
 import (
 	"fmt"
@@ -24,7 +24,7 @@ func NewBoard(size int) *Board {
 }
 
 // Отображение игрового поля
-func (b *Board) printBoard() {
+func (b *Board) PrintBoard() {
 	fmt.Print("  ")
 	for i := range b.Size {
 		fmt.Printf("%d ", i+1)
@@ -34,11 +34,11 @@ func (b *Board) printBoard() {
 		fmt.Printf("%d ", i+1)
 		for j := range b.Size {
 			switch b.Board[i][j] {
-			case empty:
+			case Empty:
 				fmt.Print(". ")
-			case cross:
+			case Cross:
 				fmt.Print("X ")
-			case nought:
+			case Nought:
 				fmt.Print("O ")
 			}
 		}
@@ -48,10 +48,10 @@ func (b *Board) printBoard() {
 
 // Проверка возможности и выполнения хода
 func (b *Board) makeMove(x, y int) bool {
-	return b.Board[x][y] == empty
+	return b.Board[x][y] == Empty
 }
 
-func (b *Board) setSymbol(x, y int, player BoardField) bool {
+func (b *Board) SetSymbol(x, y int, player BoardField) bool {
 	if b.makeMove(x, y) {
 		b.Board[x][y] = player
 		return true
@@ -60,7 +60,7 @@ func (b *Board) setSymbol(x, y int, player BoardField) bool {
 }
 
 // Проверка выигрыша
-func (b *Board) checkWin(player BoardField) bool {
+func (b *Board) CheckWin(player BoardField) bool {
 	// Проверка строк и столбцов
 	for i := range b.Size {
 		rowWin, colWin := true, true
@@ -101,10 +101,10 @@ func (b *Board) checkWin(player BoardField) bool {
 }
 
 // Проверка на ничью
-func (b *Board) checkDraw() bool {
+func (b *Board) CheckDraw() bool {
 	for i := range b.Size {
 		for j := range b.Size {
-			if b.Board[i][j] == empty {
+			if b.Board[i][j] == Empty {
 				return false
 			}
 		}
