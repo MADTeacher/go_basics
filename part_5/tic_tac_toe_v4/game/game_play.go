@@ -7,7 +7,7 @@ import (
 	p "tic-tac-toe/player"
 )
 
-func (g *Game) Play() bool {
+func (g *Game) Play() {
 	fmt.Println("For saving the game enter: save filename")
 	fmt.Println("For exiting the game enter : q")
 	fmt.Println("For making a move enter: row col")
@@ -86,9 +86,6 @@ func (g *Game) Play() bool {
 	case draw:
 		fmt.Println("It's a draw!")
 	}
-
-	// Возвращаем true, если игра закончилась нормально (не выходом)
-	return g.State != quit
 }
 
 // Проверяем, являются ли введенные данные командой на сохранение
