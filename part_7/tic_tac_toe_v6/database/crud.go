@@ -49,7 +49,6 @@ func (r *SQLiteRepository) SaveSnapshot(
 		State:          int(snapshot.State),
 		Mode:           int(snapshot.Mode),
 		Difficulty:     int(snapshot.Difficulty),
-		IsCurrentFirst: snapshot.IsCurrentFirst,
 		PlayerNickName: player.NickName,
 	}).Error
 }

@@ -30,7 +30,6 @@ type GameSnapshot struct {
 	State          int     `gorm:"not null"`
 	Mode           int     `gorm:"not null"`
 	Difficulty     int     `gorm:"not null"`
-	IsCurrentFirst bool    `gorm:"not null"`
 	PlayerNickName string  `gorm:"not null"`
 	Player         *Player `gorm:"foreignKey:PlayerNickName;references:NickName"`
 }

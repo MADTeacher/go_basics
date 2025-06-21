@@ -49,12 +49,11 @@ func (gs *GameSnapshot) ToModel() (*m.GameSnapshot, error) {
 	}
 
 	return &m.GameSnapshot{
-		Board:          &board,
-		PlayerFigure:   b.BoardField(gs.PlayerFigure),
-		State:          gs.State,
-		Mode:           gs.Mode,
-		Difficulty:     p.Difficulty(gs.Difficulty),
-		IsCurrentFirst: gs.IsCurrentFirst,
-		SnapshotName:   gs.SnapshotName,
+		Board:        &board,
+		PlayerFigure: b.BoardField(gs.PlayerFigure),
+		State:        gs.State,
+		Mode:         gs.Mode,
+		Difficulty:   p.Difficulty(gs.Difficulty),
+		SnapshotName: gs.SnapshotName,
 	}, nil
 }

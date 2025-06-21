@@ -21,8 +21,6 @@ type Game struct {
 	Mode GameMode `json:"mode"`
 	// Уровень сложности компьютера (только для PvC)
 	Difficulty p.Difficulty `json:"difficulty,omitempty"`
-	// Флаг для определения текущего игрока
-	IsCurrentFirst bool `json:"is_current_first"`
 }
 
 // Создаем новую игру
@@ -41,16 +39,15 @@ func NewGame(board b.Board, reader *bufio.Reader, saver s.IGameSaver,
 	}
 
 	return &Game{
-		Board:          &board,
-		Player:         player1,
-		Player2:        player2,
-		CurrentPlayer:  player1,
-		Reader:         reader,
-		State:          playing,
-		Saver:          saver,
-		Mode:           mode,
-		Difficulty:     difficulty,
-		IsCurrentFirst: true,
+		Board:         &board,
+		Player:        player1,
+		Player2:       player2,
+		CurrentPlayer: player1,
+		Reader:        reader,
+		State:         playing,
+		Saver:         saver,
+		Mode:          mode,
+		Difficulty:    difficulty,
 	}
 }
 

@@ -9,22 +9,14 @@ import (
 	s "tic-tac-toe/storage"
 )
 
-// Подготавливаем игру к сохранению
-func (g *Game) prepareForSave() {
-	// Устанавливаем флаг текущего игрока
-	g.IsCurrentFirst = (g.CurrentPlayer == g.Player)
-}
-
 // Возвращаем снапшот игровой сессии
 func (g *Game) gameSnapshot() *m.GameSnapshot {
-	g.prepareForSave()
 	return &m.GameSnapshot{
-		Board:          g.Board,
-		PlayerFigure:   g.Player.GetFigure(),
-		State:          int(g.State),
-		Mode:           int(g.Mode),
-		Difficulty:     g.Difficulty,
-		IsCurrentFirst: g.IsCurrentFirst,
+		Board:        g.Board,
+		PlayerFigure: g.Player.GetFigure(),
+		State:        int(g.State),
+		Mode:         int(g.Mode),
+		Difficulty:   g.Difficulty,
 	}
 }
 
@@ -38,7 +30,6 @@ func (g *Game) RestoreFromSnapshot(
 	g.State = GameState(snapshot.State)
 	g.Mode = GameMode(snapshot.Mode)
 	g.Difficulty = snapshot.Difficulty
-	g.IsCurrentFirst = snapshot.IsCurrentFirst
 
 	// Создаем объекты игроков
 	g.Player = &p.HumanPlayer{Figure: snapshot.PlayerFigure}
@@ -76,9 +67,5 @@ func (g *Game) recreatePlayersAfterLoad(reader *bufio.Reader) {
 	}
 
 	// Восстанавливаем указатель на текущего игрока
-	if g.IsCurrentFirst {
-		g.CurrentPlayer = g.Player
-	} else {
-		g.CurrentPlayer = g.Player2
-	}
+	g.CurrentPlayer = g.Player
 }
