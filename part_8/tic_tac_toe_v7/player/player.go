@@ -2,10 +2,7 @@ package player
 
 import (
 	"encoding/json"
-	"fmt"
 	"net"
-	"strconv"
-	"strings"
 	b "tic-tac-toe/board"
 	"tic-tac-toe/network"
 )
@@ -20,7 +17,9 @@ type HumanPlayer struct {
 func NewHumanPlayer(
 	nickname string, conn *net.Conn,
 ) *HumanPlayer {
-	return &HumanPlayer{Figure: b.Cross, Nickname: nickname, Conn: conn}
+	return &HumanPlayer{
+		Figure: b.Cross, Nickname: nickname, Conn: conn,
+	}
 }
 
 func (p *HumanPlayer) CheckSocket(conn net.Conn) bool {
@@ -58,36 +57,9 @@ func (p *HumanPlayer) GetFigure() b.BoardField {
 }
 
 // Метод-заглушка, т.к. ввод игрока осуществляется на
-// уровне пакета game, где нужно еще отрабатывать
-// команду на выход и сохранение игровой сессии
+// клиентской стороне
 func (p *HumanPlayer) MakeMove(board *b.Board) (int, int, bool) {
 	return -1, -1, false
-}
-
-// Обрабатываем строку ввода и
-// преобразуем ее в координаты хода
-func (p *HumanPlayer) ParseMove(
-	input string,
-	board *b.Board,
-) (int, int, bool) {
-	parts := strings.Fields(input)
-	if len(parts) != 2 {
-		fmt.Println("Invalid input. Please try again.")
-		return -1, -1, false
-	}
-
-	row, err1 := strconv.Atoi(parts[0])
-	col, err2 := strconv.Atoi(parts[1])
-	if err1 != nil || err2 != nil ||
-		row < 1 || col < 1 || row > board.Size ||
-		col > board.Size {
-		fmt.Println("Invalid input. Please try again.")
-		return -1, -1, false
-	}
-
-	// Преобразуем введенные координаты (начиная с 1)
-	// в индексы массива (начиная с 0)
-	return row - 1, col - 1, true
 }
 
 func (p *HumanPlayer) IsComputer() bool {

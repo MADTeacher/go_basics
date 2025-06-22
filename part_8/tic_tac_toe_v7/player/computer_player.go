@@ -19,8 +19,7 @@ type ComputerPlayer struct {
 
 // Создаем нового игрока-компьютера с заданным уровнем сложности
 func NewComputerPlayer(
-	figure b.BoardField,
-	difficulty g.Difficulty,
+	figure b.BoardField, difficulty g.Difficulty,
 ) *ComputerPlayer {
 	source := rand.NewSource(time.Now().UnixNano())
 	return &ComputerPlayer{
@@ -45,12 +44,8 @@ func (p *ComputerPlayer) GetNickname() string {
 	return "Computer"
 }
 
-func (p *ComputerPlayer) SwitchPlayer() {
-	if p.Figure == b.Cross {
-		p.Figure = b.Nought
-	} else {
-		p.Figure = b.Cross
-	}
+func (p *ComputerPlayer) CheckSocket(conn net.Conn) bool {
+	return false
 }
 
 func (p *ComputerPlayer) GetFigure() b.BoardField {
@@ -59,6 +54,14 @@ func (p *ComputerPlayer) GetFigure() b.BoardField {
 
 func (p *ComputerPlayer) IsComputer() bool {
 	return true
+}
+
+func (p *ComputerPlayer) SwitchPlayer() {
+	if p.Figure == b.Cross {
+		p.Figure = b.Nought
+	} else {
+		p.Figure = b.Cross
+	}
 }
 
 // Реализуем ход компьютера в зависимости от выбранной сложности
@@ -89,10 +92,6 @@ func (p *ComputerPlayer) makeEasyMove(board *b.Board) (int, int) {
 	// Выбираем случайную свободную клетку
 	randomIndex := p.rand.Intn(len(emptyCells))
 	return emptyCells[randomIndex][0], emptyCells[randomIndex][1]
-}
-
-func (p *ComputerPlayer) CheckSocket(conn net.Conn) bool {
-	return false
 }
 
 // Средний уровень: проверяет возможность выигрыша

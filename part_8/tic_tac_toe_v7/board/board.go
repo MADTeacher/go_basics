@@ -36,18 +36,6 @@ func (b *Board) IsEmpty() bool {
 }
 
 // Отображение игрового поля
-// ToStringSlice converts the board to a slice of strings for serialization.
-func (b *Board) ToStringSlice() []string {
-	slice := make([]string, 0, b.Size*b.Size)
-	for i := 0; i < b.Size; i++ {
-		for j := 0; j < b.Size; j++ {
-			slice = append(slice, b.Board[i][j].String())
-		}
-	}
-	return slice
-}
-
-// Отображение игрового поля
 func (b *Board) PrintBoard() {
 	fmt.Print("  ")
 	for i := range b.Size {

@@ -76,7 +76,10 @@ func (s *Server) handleConnection(conn net.Conn) {
 	for {
 		var msg network.Message
 		if err := decoder.Decode(&msg); err != nil {
-			log.Printf("Client %s disconnected: %v", conn.RemoteAddr(), err)
+			log.Printf(
+				"Client %s disconnected: %v", conn.RemoteAddr(),
+				err,
+			)
 			s.disconnectedClientHandler(conn)
 			return
 		}

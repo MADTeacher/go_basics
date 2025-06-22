@@ -38,9 +38,13 @@ func (r *SQLiteRepository) GetAllFinishedGames() (*[]m.FinishGameSnapshot, error
 	return &finishGameSnapshots, nil
 }
 
-func (r *SQLiteRepository) GetFinishedGameById(id int) (*m.FinishGameSnapshot, error) {
+func (r *SQLiteRepository) GetFinishedGameById(
+	id int,
+) (*m.FinishGameSnapshot, error) {
 	var playerFinishGame PlayerFinishGame
-	if err := r.db.Where("id = ?", id).First(&playerFinishGame).Error; err != nil {
+	if err := r.db.Where("id = ?", id).First(
+		&playerFinishGame,
+	).Error; err != nil {
 		return nil, err
 	}
 	return playerFinishGame.ToModel()

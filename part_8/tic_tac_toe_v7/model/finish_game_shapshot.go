@@ -6,10 +6,16 @@ import (
 )
 
 type FinishGameSnapshot struct {
-	ID                int              `json:"id"`
-	Board             *board.Board     `json:"board"`
-	PlayerFigure      board.BoardField `json:"player_figure"`
-	WinnerName        string           `json:"winner_name"`
-	AnotherPlayerName string           `json:"another_player_name"`
-	Time              time.Time        `json:"time"`
+	// Идентификатор игры
+	ID int `json:"id"`
+	// Состояние доски в момент завершения игры
+	Board *board.Board `json:"board"`
+	// Символ (Х/О) победившего игрока
+	PlayerFigure board.BoardField `json:"player_figure"`
+	// Имя победителя
+	WinnerName string `json:"winner_name"`
+	// Имя противника
+	AnotherPlayerName string `json:"another_player_name"`
+	// Время завершения игры
+	Time time.Time `json:"time"`
 }

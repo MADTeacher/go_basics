@@ -8,16 +8,3 @@ const (
 	Cross
 	Nought
 )
-
-func (bf BoardField) String() string {
-	switch bf {
-	case Empty:
-		return "."
-	case Cross:
-		return "X"
-	case Nought:
-		return "O"
-	default:
-		return "?"
-	}
-}

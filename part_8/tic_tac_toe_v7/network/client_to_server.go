@@ -1,7 +1,8 @@
 package network
 
+// Сообщения от клиента к серверу
+
 const (
-	// Client to Server Commands
 	CmdNickname                Command = "nickname"
 	CmdJoinRoomRequest         Command = "join_room"
 	CmdLeaveRoomRequest        Command = "leave_room"
@@ -11,29 +12,29 @@ const (
 	CmdFinishedGameByIdRequest Command = "get_finished_game_by_id"
 )
 
-// LoginRequest отправляется клиентом для входа в систему.
+// Запрос от клиента для входа в систему
 type NicknameRequest struct {
 	Nickname string `json:"nickname"`
 }
 
-// JoinRoomRequest отправляется клиентом для подключения к существующей комнате.
+// Запрос от клиента для подключения к существующей комнате
 type JoinRoomRequest struct {
 	RoomName   string `json:"room_name"`
 	PlayerName string `json:"player_name"`
 }
 
-// LeaveRoomRequest отправляется клиентом для выхода из текущей комнаты.
+// Запрос от клиента для выхода из текущей комнаты
 type LeaveRoomRequest struct {
 	RoomName   string `json:"room_name"`
 	PlayerName string `json:"player_name"`
 }
 
-// ListRoomsRequest отправляется клиентом для получения списка доступных комнат.
-// Обычно для этого запроса не требуется специальная полезная нагрузка.
+// Запрос от клиента для получения списка доступных комнат
+// Обычно для этого запроса не требуется специальная полезная нагрузка
 type ListRoomsRequest struct {
 }
 
-// MakeMoveRequest отправляется клиентом для совершения хода в игре.
+// Сообщение с данными о ходе игрока
 type MakeMoveRequest struct {
 	RoomName    string `json:"room_name"`
 	PlayerName  string `json:"player_name"`
@@ -41,12 +42,11 @@ type MakeMoveRequest struct {
 	PositionCol int    `json:"position_col"`
 }
 
-// GetFinishedGamesRequest отправляется клиентом для получения списка завершенных игр.
-// Обычно для этого запроса не требуется специальная полезная нагрузка, если запрашиваются все игры для пользователя.
+// Запрос от клиента для получения списка завершенных игр
 type GetFinishedGamesRequest struct {
 }
 
-// GetFinishedGameByIdRequest отправляется клиентом для получения конкретной завершенной игры.
+// Запрос от клиента для получения конкретной завершенной игры
 type GetFinishedGameByIdRequest struct {
 	GameID int `json:"game_id"`
 }

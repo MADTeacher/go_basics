@@ -1,0 +1,429 @@
+openapi: 3.0.2
+info:
+  title: ToDo client-server api
+  description: |
+    Документация по описанию конечных точек сервера, посредством которых 
+    происходит доступ к ресурсам
+  version: 1.0.0
+servers:
+- url: http://127.0.0.1:8080/api/v1/todo
+
+tags:
+- name: task
+- name: project
+
+paths:
+  /project:
+    post:
+      tags:
+      - project
+      description: |
+        Добавление проекта
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+      responses:
+        "201":
+          description: Добавление прошло успешно.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoodResponse'
+              examples:
+                response:
+                  value: |-
+                    {
+                      "code": 201,
+                      "message": "Project created",
+                      "id": 1
+                    }
+        "400":
+          description: Невалидная схема проекта или входные данные не верны.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                response:
+                  value: |-
+                    {
+                      "code": 400,
+                      "message": "Validation Failed"
+                    }
+  
+  /project/del/{id}: 
+    delete:
+      tags: 
+        - project
+      description: |
+        Удалить проект
+      parameters: 
+        - description: Идентификатор
+          in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        "200":
+          description: Удаление прошло успешно.
+        "400":
+          description: Невалидная схема проекта или входные данные не верны.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                response:
+                  value: |-
+                    {
+                      "code": 400,
+                      "message": "Validation Failed"
+                    }
+        "404":
+          description: Проект не найден.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                response:
+                  value: |-
+                    {
+                      "code": 404,
+                      "message": "Project not found"
+                    }
+  
+  /projects:
+    get:
+      tags: 
+        - project
+      description: |
+        Получить список проектов
+      responses:
+        "200":
+          description: Запрос прошел успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProgectsList"
+        "404":
+          description: Проект не найден.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                response:
+                  value: |-
+                    {
+                      "code": 404,
+                      "message": "Projects not found"
+                    }
+
+  /task:
+    put:
+      tags: 
+        - task
+      description: |
+        Изменение статуса задачи
+      parameters:
+        - in: query
+          required: true
+          name: id
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "201":
+          description: Запрос прошел успешно
+        "400":
+          description: Невалидная схема задачи или входные данные не верны.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                response:
+                  value: |-
+                    {
+                      "code": 400,
+                      "message": "Validation Failed"
+                    }
+        "404":
+          description: Проект не найден.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                response:
+                  value: |-
+                    {
+                      "code": 404,
+                      "message": "Tasks not found"
+                    }  
+    post:
+      tags: 
+        - task
+      description: |
+        Добавление задачи
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Task"
+      responses:
+        "201":
+          description: Добавление прошло успешно.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GoodResponse"
+              examples:
+                response:
+                  value: |-
+                    {
+                      "code": 201,
+                      "message": "Task created",
+                      "id": 1
+                    }
+        "400":
+          description: Невалидная схема задачи или входные данные не верны.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                response:
+                  value: |-
+                    {
+                      "code": 400,
+                      "message": "Validation Failed"
+                    }
+    get:
+      tags: 
+        - task
+      description: |
+        Получение списка всех задач или конкретного проекта
+      parameters:
+        - in: query
+          name: projectID
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: Запрос прошел успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TasksList"
+        "400":
+          description: Невалидная схема задачи или входные данные не верны.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                response:
+                  value: |-
+                    {
+                      "code": 400,
+                      "message": "Validation Failed"
+                    }
+        "404":
+          description: Проект не найден.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                response:
+                  value: |-
+                    {
+                      "code": 404,
+                      "message": "Tasks not found"
+                    }
+    delete:
+      tags: 
+        - task
+      description: |
+        Удаление задачи с заданным ID
+      parameters:
+        - in: query
+          required: true
+          name: id
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: Запрос прошел успешно
+        "400":
+          description: Невалидная схема задачи или входные данные не верны.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                response:
+                  value: |-
+                    {
+                      "code": 400,
+                      "message": "Validation Failed"
+                    }
+        "404":
+          description: Задача не найдена.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                response:
+                  value: |-
+                    {
+                      "code": 404,
+                      "message": "Task not found"
+                    }
+
+components:
+  schemas:
+    Error:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          nullable: false
+        message:
+          type: string
+          nullable: false
+
+    GoodResponse:
+      required:
+      - code
+      - id
+      - message
+      properties:
+        code:
+          type: integer
+          nullable: false
+        message:
+          type: string
+          nullable: false
+        id:
+          type: integer
+          nullable: false
+      example:
+        code: 0
+        id: 6
+        message: message
+
+    Project:
+      required:
+      - description
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: integer
+          description: id project
+        name:
+          type: string
+          description: Имя проекта
+          nullable: false
+        description:
+          type: string
+          description: Описание проекта
+          nullable: false
+      example:
+        id: 1
+        name: Пафос и Превозмогание
+        description: Прожать батоны и вперед!!!
+    
+    ProgectsList:
+      type: object
+      properties:
+        items:
+          type: array
+          description: Список существующих проектов
+          nullable: false
+          items:
+            $ref: '#/components/schemas/Project'
+      example:
+        items:
+        - id: 1
+          name: Пафос и Превозмогание
+          description: Прожать батоны и вперед!!!
+        - id: 1
+          name: Пафос и Превозмогание
+          description: Прожать батоны и вперед!!!
+
+    Task:
+      required:
+      - description
+      - id
+      - isDone
+      - name
+      - projectID
+      - priority
+      type: object
+      properties:
+        id:
+          type: integer
+          description: id task
+        name:
+          type: string
+          description: Имя задачи
+          nullable: false
+        description:
+          type: string
+          description: Описание задачи
+          nullable: false
+        priority:
+          type: integer
+          description: приоритет задачи
+          nullable: false
+        isDone:
+          type: boolean
+          description: Флаг о выполнении задачи
+          nullable: false
+        projectID:
+          type: integer
+          description: id task
+          nullable: false
+      example:
+        id: 1
+        name: 10к подписчиков
+        description: Прожать батоны и вперед!!!
+        isDone: false
+        projectID: 1
+        priority: 3
+
+    TasksList:
+      type: object
+      properties:
+        items:
+          type: array
+          description: Список существующих проектов
+          nullable: false
+          items:
+            $ref: '#/components/schemas/Task'
+      example:
+        items:
+        - id: 1
+          name: 10к подписчиков
+          description: Прожать батоны и вперед!!!
+          isDone: false
+          projectID: 1
+        - id: 1
+          name: 10к подписчиков
+          description: Прожать батоны и вперед!!!
+          isDone: false
+          projectID: 1
