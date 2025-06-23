@@ -109,7 +109,7 @@ func (c *Client) handleUserFlow() {
 				continue
 			}
 
-			// Быстрый сон для избежания загрузки процессора
+			// Небольшое время сна для избежания загрузки процессора
 			time.Sleep(100 * time.Millisecond)
 			continue
 		}

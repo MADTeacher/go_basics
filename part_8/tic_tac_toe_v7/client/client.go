@@ -78,7 +78,7 @@ func (c *Client) Start() {
 	fmt.Println("Connected to server. ")
 	// Запускаем горутину для чтения сообщений от сервера
 	go c.readFromServer()
-	// Запускаем меню клиента для взаимодействия с пользователем
+	// Запускаем управление пользовательским потоком
 	c.handleUserFlow()
 }
 
@@ -86,6 +86,7 @@ func (c *Client) Start() {
 func (c *Client) readFromServer() {
 	decoder := json.NewDecoder(c.conn) // Создаем декодер
 	for {                              // Бесконечный цикл
+		// Создаем буфер и десериализуем в него сообщение от сервера
 		var msg network.Message
 		if err := decoder.Decode(&msg); err != nil {
 			log.Printf("Disconnected from server: %v", err)
@@ -93,10 +94,10 @@ func (c *Client) readFromServer() {
 		}
 
 		switch msg.Cmd {
-		// Обрабатываем ответ на запрос на присоединение к комнате
+		// Обрабатываем ответ на запрос о присоединении к комнате
 		case network.CmdRoomJoinResponse:
 			c.handleRoomJoinResponse(msg.Payload)
-		// Обрабатываем сообщение об инициализацию игры
+		// Обрабатываем сообщение об инициализации игры
 		case network.CmdInitGame:
 			c.handleInitGame(msg.Payload)
 		// Обрабатываем сообщение об обновлении состояния игры

@@ -182,7 +182,7 @@ func (c *Client) handleEndGame(payload json.RawMessage) {
 		} else {
 			fmt.Printf("Player %s wins!\n", res.CurrentPlayer)
 		}
-		c.setState(endGame) /// Переходи состояние завершения игры
+		c.setState(endGame) // Переходим в состояние завершения игры
 		fmt.Print("> ")
 	} else {
 		log.Printf("Error unmarshalling EndGameResponse: %v", err)
