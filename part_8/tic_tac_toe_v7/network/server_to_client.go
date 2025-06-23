@@ -11,7 +11,6 @@ const (
 	CmdUpdateState           Command = "update_state"
 	CmdError                 Command = "error"
 	CmdNickNameResponse      Command = "nick_name_response"
-	CmdRoomCreated           Command = "room_created"
 	CmdRoomJoinResponse      Command = "room_join_response"
 	CmdRoomListResponse      Command = "room_list_response"
 	CmdInitGame              Command = "init_game"
@@ -67,12 +66,6 @@ type ErrorResponse struct {
 // Отправляется сервером при успешном входе клиента
 type NickNameResponse struct {
 	Nickname string `json:"nickname"`
-}
-
-// Отправляется сервером после успешного создания комнаты
-type RoomCreatedResponse struct {
-	RoomID   string `json:"room_id"`
-	RoomName string `json:"room_name"`
 }
 
 // Отправляется сервером, когда клиент успешно присоединился к комнате

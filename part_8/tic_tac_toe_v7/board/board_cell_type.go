@@ -8,3 +8,15 @@ const (
 	Cross
 	Nought
 )
+
+// Возвращаем строковое представление фигуры
+func (f BoardField) String() string {
+	switch f {
+	case Cross:
+		return "X"
+	case Nought:
+		return "O"
+	default:
+		return " "
+	}
+}

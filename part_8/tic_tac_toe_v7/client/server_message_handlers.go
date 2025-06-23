@@ -5,39 +5,47 @@ import (
 	"fmt"
 	"log"
 
-	b "tic-tac-toe/board"
-	g "tic-tac-toe/game" // Added for g.GameMode
+	b "tic-tac-toe/board" // Added for g.GameMode
 	"tic-tac-toe/network"
 )
 
-// handleRoomJoinResponse processes the RoomJoinResponse message from the server.
+// Обрабатываем ответ на запрос на присоединение к комнате
 func (c *Client) handleRoomJoinResponse(payload json.RawMessage) {
-	var res network.RoomJoinResponse
+	var res network.RoomJoinResponse // Десериализуем ответ
 	if err := json.Unmarshal(payload, &res); err == nil {
-		c.mySymbol = res.PlayerSymbol
-		c.roomName = res.RoomName
-		if res.Board.Size > 0 { // Check if board is valid
-			c.board = &res.Board
-			fmt.Printf("\nSuccessfully joined room '%s' as %s.\n", res.RoomName, res.PlayerSymbol)
+		c.mySymbol = res.PlayerSymbol // Устанавливаем фигуру игрока
+		c.roomName = res.RoomName     // Устанавливаем имя комнаты
+		if res.Board.Size > 0 {       // Проверяем размер поля
+			c.board = &res.Board // Устанавливаем игровое поле
+			fmt.Printf(
+				"\nSuccessfully joined room '%s' as %s.\n",
+				res.RoomName, res.PlayerSymbol,
+			)
 			c.board.PrintBoard()
 		} else {
-			fmt.Printf("\nSuccessfully joined room '%s' as %s. Waiting for game to start...\n", res.RoomName, res.PlayerSymbol)
+			fmt.Printf(
+				"\nSuccessfully joined room '%s' as %s. "+
+					"Waiting for game to start...\n",
+				res.RoomName, res.PlayerSymbol,
+			)
 		}
 	} else {
 		log.Printf("Error unmarshalling RoomJoinResponse: %v", err)
 	}
+	// Устанавливаем состояние клиента
 	c.setState(waitingOpponentInRoom)
 }
 
-// handleInitGame processes the InitGameResponse message from the server.
+// Обрабатываем ответ на запрос на инициализацию игры
 func (c *Client) handleInitGame(payload json.RawMessage) {
-	var res network.InitGameResponse
+	var res network.InitGameResponse // Десериализуем ответ
 	if err := json.Unmarshal(payload, &res); err == nil {
-		c.board = &res.Board
-		c.currentPlayer = res.CurrentPlayer
+		c.board = &res.Board                // Устанавливаем игровое поле
+		c.currentPlayer = res.CurrentPlayer // Устанавливаем фигуру игрока
 		fmt.Println("\n--- Game Started ---")
-		c.board.PrintBoard()
-		c.printTurnInfo()
+		c.board.PrintBoard() // Выводим игровое поле
+		c.printTurnInfo()    // Выводим информацию о ходе игрока
+		// Устанавливаем состояние клиента
 		if res.CurrentPlayer == c.mySymbol {
 			c.setState(playerMove)
 		} else {
@@ -48,15 +56,16 @@ func (c *Client) handleInitGame(payload json.RawMessage) {
 	}
 }
 
-// handleUpdateState processes the GameStateUpdate message from the server.
+// Обрабатываем сообщение об обновлении состояния игры
 func (c *Client) handleUpdateState(payload json.RawMessage) {
-	var res network.GameStateUpdate
+	var res network.GameStateUpdate // Десериализуем ответ
 	if err := json.Unmarshal(payload, &res); err == nil {
-		c.board = &res.Board
-		c.currentPlayer = res.CurrentPlayer
+		c.board = &res.Board                // Устанавливаем игровое поле
+		c.currentPlayer = res.CurrentPlayer // Устанавливаем фигуру игрока
 		fmt.Println("\n--- Game State Update ---")
-		c.board.PrintBoard()
-		c.printTurnInfo()
+		c.board.PrintBoard() // Выводим игровое поле
+		c.printTurnInfo()    // Выводим информацию о ходе игрока
+		// Устанавливаем состояние клиента
 		if res.CurrentPlayer == c.mySymbol {
 			c.setState(playerMove)
 		} else {
@@ -67,28 +76,29 @@ func (c *Client) handleUpdateState(payload json.RawMessage) {
 	}
 }
 
-// handleEndGame processes the EndGameResponse message from the server.
+// Обрабатываем сообщение об окончании игры
 func (c *Client) handleEndGame(payload json.RawMessage) {
-	var res network.EndGameResponse
+	var res network.EndGameResponse // Десериализуем ответ
 	if err := json.Unmarshal(payload, &res); err == nil {
-		c.board = &res.Board
+		c.board = &res.Board // Устанавливаем игровое поле
 		fmt.Println("\n--- Game Over ---")
-		c.board.PrintBoard()
+		c.board.PrintBoard() // Выводим игровое поле
+		// Выводим информацию о победителе
 		if res.CurrentPlayer == b.Empty {
 			fmt.Println("It's a Draw!")
 		} else {
 			fmt.Printf("Player %s wins!\n", res.CurrentPlayer)
 		}
-		c.setState(endGame)
+		c.setState(endGame) // Устанавливаем состояние клиента
 		fmt.Print("> ")
 	} else {
 		log.Printf("Error unmarshalling EndGameResponse: %v", err)
 	}
 }
 
-// handleError processes the ErrorResponse message from the server.
+// Обрабатываем сообщение об ошибке
 func (c *Client) handleError(payload json.RawMessage) {
-	var errPayload network.ErrorResponse
+	var errPayload network.ErrorResponse // Десериализуем ответ
 	if err := json.Unmarshal(payload, &errPayload); err == nil {
 		fmt.Printf("\nServer Error: %s\n> ", errPayload.Message)
 	} else {
@@ -97,41 +107,18 @@ func (c *Client) handleError(payload json.RawMessage) {
 	c.setState(mainMenu)
 }
 
-// gameModeToString converts GameMode to a string representation.
-func gameModeToString(mode g.GameMode) string {
-	switch mode {
-	case g.PvP:
-		return "PvP"
-	case g.PvC:
-		return "PvC"
-	default:
-		return "Unknown"
-	}
-}
-
-func difficultyToString(difficulty g.Difficulty) string {
-	switch difficulty {
-	case g.Easy:
-		return "Easy"
-	case g.Medium:
-		return "Medium"
-	case g.Hard:
-		return "Hard"
-	default:
-		return ""
-	}
-}
-
-// handleRoomListResponse processes the RoomListResponse message from the server.
+// Обрабатываем сообщение о списке комнат
 func (c *Client) handleRoomListResponse(payload json.RawMessage) {
-	var roomList network.RoomListResponse
+	var roomList network.RoomListResponse // Десериализуем ответ
 	if err := json.Unmarshal(payload, &roomList); err == nil {
 		fmt.Println("\nAvailable rooms:")
+		// Если список комнат пуст
 		if len(roomList.Rooms) == 0 {
 			fmt.Println("No rooms available.")
-		} else {
+		} else { // Иначе выводим список комнат
 			for _, room := range roomList.Rooms {
-				fmt.Printf("- %s (Board Size: %dx%d, Full: %t, Mode: %s, Difficulty: %s)\n",
+				fmt.Printf("- %s (Board Size: %dx%d, Full: %t, "+
+					"Mode: %s, Difficulty: %s)\n",
 					room.Name,
 					room.BoardSize, room.BoardSize,
 					room.IsFull,
@@ -146,37 +133,39 @@ func (c *Client) handleRoomListResponse(payload json.RawMessage) {
 	c.setState(mainMenu)
 }
 
-// handleNickNameResponse processes the NickNameResponse message from the server.
+// Обрабатываем ответ на запрос на присоединение к комнате
 func (c *Client) handleNickNameResponse(payload json.RawMessage) {
-	var res network.NickNameResponse
+	var res network.NickNameResponse // Десериализуем ответ
 	if err := json.Unmarshal(payload, &res); err == nil {
 		fmt.Printf("\nWelcome, %s!\n> ", res.Nickname)
-		c.setNickname(res.Nickname)
-		c.setState(mainMenu)
+		c.setNickname(res.Nickname) // Устанавливаем никнейм игрока
+		c.setState(mainMenu)        // Устанавливаем состояние клиента
 	} else {
 		log.Printf("Error unmarshalling NickNameResponse: %v", err)
 	}
 }
 
-// handleOpponentLeft processes the OpponentLeft message from the server.
+// Обрабатываем сообщение об отключении оппонента
 func (c *Client) handleOpponentLeft(payload json.RawMessage) {
-	var res network.OpponentLeft
+	var res network.OpponentLeft // Десериализуем ответ
 	if err := json.Unmarshal(payload, &res); err == nil {
 		fmt.Printf("\nPlayer '%s' has left the game.\n> ", res.Nickname)
 	} else {
 		log.Printf("Error unmarshalling OpponentLeft: %v", err)
 	}
+	// Устанавливаем состояние клиента
 	c.setState(waitingOpponentInRoom)
 }
 
-// handleFinishedGamesResponse processes the FinishedGamesResponse message from the server.
+// Обрабатываем ответ на запрос на получение списка завершенных игр
 func (c *Client) handleFinishedGamesResponse(payload json.RawMessage) {
-	var res network.FinishedGamesResponse
+	var res network.FinishedGamesResponse // Десериализуем ответ
 	if err := json.Unmarshal(payload, &res); err == nil {
 		fmt.Println("\nFinished games:")
+		// Если список завершенных игр пуст
 		if res.Games == nil || len(*res.Games) == 0 {
 			fmt.Println("No finished games.")
-		} else {
+		} else { // Иначе выводим список завершенных игр
 			for _, game := range *res.Games {
 				fmt.Printf("- Game #%d: %s vs %s (Winner: %s) at %v\n",
 					game.ID, game.WinnerName,
@@ -188,13 +177,16 @@ func (c *Client) handleFinishedGamesResponse(payload json.RawMessage) {
 	} else {
 		log.Printf("Error unmarshalling FinishedGamesResponse: %v", err)
 	}
+	// Устанавливаем состояние клиента
 	c.setState(mainMenu)
 }
 
-// handleFinishedGameResponse processes the FinishedGameResponse message from the server.
+// Обрабатываем ответ на запрос на получение данных
+// о конкретной завершенной игре
 func (c *Client) handleFinishedGameResponse(payload json.RawMessage) {
-	var res network.FinishedGameResponse
+	var res network.FinishedGameResponse // Десериализуем ответ
 	if err := json.Unmarshal(payload, &res); err == nil {
+		// Выводим информацию о завершенной игре
 		fmt.Println("\nFinished game:")
 		fmt.Printf("- Game #%d: %s vs %s (Winner: %s) at %v\n",
 			res.Game.ID, res.Game.WinnerName,
@@ -207,5 +199,5 @@ func (c *Client) handleFinishedGameResponse(payload json.RawMessage) {
 	} else {
 		log.Printf("Error unmarshalling FinishedGameResponse: %v", err)
 	}
-	c.setState(mainMenu)
+	c.setState(mainMenu) // Устанавливаем состояние клиента
 }
