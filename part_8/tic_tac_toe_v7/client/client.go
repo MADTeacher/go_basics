@@ -14,24 +14,15 @@ import (
 
 // Объявление структуры клиента
 type Client struct {
-	// подключение к серверу
-	conn net.Conn
-	// игровое поле
-	board *b.Board
-	// фигура игрока
-	mySymbol b.BoardField
-	// фигура игрока, ход которой сейчас
-	currentPlayer b.BoardField
-	// никнейм игрока
-	playerName string
-	// имя комнаты
-	roomName string
-	// текущее состояние клиента
-	state State
-	// мьютекс для защиты доступа к данным
-	mutex sync.RWMutex
-	// время последнего сообщения
-	lastMsgTime time.Time
+	conn          net.Conn     // подключение к серверу
+	board         *b.Board     // игровое поле
+	mySymbol      b.BoardField // фигура игрока
+	currentPlayer b.BoardField // фигура игрока, чей сейчас ход
+	playerName    string       // имя комнаты
+	roomName      string       // имя комнаты
+	state         State        // текущее состояние клиента
+	mutex         sync.RWMutex // мьютекс для защиты доступа к данным
+	lastMsgTime   time.Time    // время последнего сообщения
 }
 
 // Констукторная функция для создания клиента
@@ -51,7 +42,7 @@ func NewClient(addr string) (*Client, error) {
 	}, nil
 }
 
-// Устанавливаем никнейм игрока
+// Устанавливаем никнейма игрока
 func (c *Client) setNickname(nickname string) {
 	c.playerName = nickname
 }
@@ -88,7 +79,7 @@ func (c *Client) Start() {
 	// Запускаем горутину для чтения сообщений от сервера
 	go c.readFromServer()
 	// Запускаем меню клиента для взаимодействия с пользователем
-	c.menu()
+	c.handleUserFlow()
 }
 
 // Читаем сообщения от сервера

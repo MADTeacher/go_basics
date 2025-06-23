@@ -36,7 +36,7 @@ func (c *Client) validateMove(row, col int) bool {
 		)
 		return false
 	}
-	// Преобразуем в 0-индексированный для доступа к полю
+	// Нормируем индекс для доступа к полю
 	if c.board.Board[row-1][col-1] != b.Empty {
 		fmt.Println("Invalid move. Cell is already occupied.")
 		return false
