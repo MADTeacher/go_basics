@@ -2,23 +2,21 @@ package main
 
 import "fmt"
 
+type employee struct {
+	name           string
+	departmentName string
+	age            uint8
+	position       string
+}
+
 func main() {
-	rez, check := add(10, 8)
-	fmt.Printf("a + b = %d, a > b = %t", rez, check)
+	emp2 := employee{
+		name:     "Tom",
+		position: "Intern",
+	}
+	emp2.age = 22
+	emp2.departmentName = "R&D"
+	fmt.Printf("%+v\n", emp2) // {name:Tom departmentName:R&D age:22 position:Intern}
+	emp2.position = "Engineer"
+	fmt.Printf("%+v\n", emp2) // {name:Tom departmentName:R&D age:22 position:Engineer}
 }
-
-func add(a, b int) (int, bool) {
-	return a + b, a > b
-}
-
-// a + b = 18, a > b = true
-
-// func main() {
-// 	rez := add(10, 8) // assignment mismatch: 1 variable but add returns 2 values
-// 	fmt.Printf("a + b = %d", rez)
-// }
-
-// func main() {
-// 	rez, _ := add(10, 8)
-// 	fmt.Printf("a + b = %d", rez) // a + b = 18
-// }

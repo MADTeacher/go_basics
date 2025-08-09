@@ -1,22 +1,14 @@
 package main
 
-import "fmt"
-
-type employee struct {
-	name           string
-	departmentName string
-	age            uint8
-	position       string
-}
+import (
+	"log"
+	"os"
+)
 
 func main() {
-	emp2 := employee{
-		name:     "Tom",
-		position: "Intern",
+	pathToFile := "test.txt"
+	err := os.Remove(pathToFile)
+	if err != nil {
+		log.Fatal(err)
 	}
-	emp2.age = 22
-	emp2.departmentName = "R&D"
-	fmt.Printf("%+v\n", emp2) // {name:Tom departmentName:R&D age:22 position:Intern}
-	emp2.position = "Engineer"
-	fmt.Printf("%+v\n", emp2) // {name:Tom departmentName:R&D age:22 position:Engineer}
 }

@@ -1,16 +1,16 @@
 package main
 
-import "fmt"
-
-type employee struct {
-	name           string
-	departmentName string
-	age            uint8
-	position       string
-}
+import (
+	"fmt"
+	"log"
+	"os"
+)
 
 func main() {
-	var emp employee
-	emp2 := employee{}
-	fmt.Println(emp, emp2) // {  0 } {  0 }
+	file, err := os.Create("test.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(file)
+	file.Close() // закрытие файла
 }

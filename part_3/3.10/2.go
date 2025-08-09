@@ -2,24 +2,12 @@ package main
 
 import "fmt"
 
-func createGenerator(start int, end int) chan int {
-	ch := make(chan int, end-start)
-	go func(ch chan int) {
-		for i := start; i <= end; i++ {
-			ch <- i // помещение значения в канал
-		}
-		close(ch)
-	}(ch)
-	return ch
+func Sum[T int | float64 | string](a, b T) T {
+	return a + b
 }
 
 func main() {
-	generator := createGenerator(4, 8)
-	for {
-		value := <-generator // распаковка значения из канала в переменную
-		fmt.Printf("%d || ", value)
-		if len(generator) <= 0 { // проверка на выход из бесконечного цикла
-			break
-		}
-	}
+	fmt.Println(Sum(10.3, 45.1)) // 55.4
+	fmt.Println(Sum(10, 45))     // 55
+	fmt.Println(Sum("^_", "^"))  // ^_^
 }

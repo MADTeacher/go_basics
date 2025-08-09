@@ -2,14 +2,15 @@ package main
 
 import "fmt"
 
+type employee struct {
+	name           string
+	departmentName string
+	age            uint8
+	position       string
+}
+
 func main() {
-	hello() // вызов функции hello
-	fmt.Println("exit")
+	var emp employee
+	emp2 := employee{}
+	fmt.Println(emp, emp2) // {  0 } {  0 }
 }
-
-func hello() {
-	fmt.Println("Hello World!")
-}
-
-// Hello World!
-// exit

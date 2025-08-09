@@ -2,19 +2,18 @@ package main
 
 import "fmt"
 
-func sumElem(slice []int) int {
-	fmt.Println(slice)
-	if len(slice) <= 1 {
-		return slice[0]
-	}
-	return anotherFunction(slice)
+type shape struct {
+	name string
 }
 
-func anotherFunction(slice []int) int {
-	return slice[0] + sumElem(slice[1:])
+func (s *shape) getName() string {
+	return s.name
 }
 
 func main() {
-	mySlice := []int{2, 5, 22, 9, 0}
-	fmt.Println(sumElem(mySlice))
+	var firstInterface interface{} = shape{name: "Cube"}
+	var secondInterface interface{} = "Oo"
+
+	fmt.Printf("%+v\n", firstInterface)  // {name:Cube}
+	fmt.Printf("%+v\n", secondInterface) // Oo
 }

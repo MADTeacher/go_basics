@@ -2,10 +2,21 @@ package main
 
 import "fmt"
 
-func main() {
-	fmt.Println(userInfo(3, 5, "Alex")) // User name: Alex, age: 3, exp years: 5
+type employee struct {
+	name           string
+	departmentName string
+	age            uint8
+	position       string
 }
 
-func userInfo(age, exp int, name string) string {
-	return fmt.Sprintf("User name: %s, age: %d, exp year: %d", name, age, exp)
+func main() {
+	emp2 := employee{
+		name:     "Tom",
+		position: "Intern",
+	}
+	emp2.age = 22
+	emp2.departmentName = "R&D"
+	fmt.Println(emp2) // {Tom R&D 22 Intern}
+	emp2.position = "Engineer"
+	fmt.Println(emp2) // {Tom R&D 22 Engineer}
 }

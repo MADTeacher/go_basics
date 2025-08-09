@@ -1,29 +1,19 @@
 package main
 
-import "fmt"
-
-type employee struct {
-	name           string
-	departmentName string
-	age            uint8
-	position       string
-}
+import (
+	"fmt"
+	"log"
+	"os"
+)
 
 func main() {
-	emp1 := employee{
-		name:           "Alex",
-		age:            25,
-		departmentName: "R&D",
-		position:       "Assistant",
+	fileInfo, err := os.Stat("test.txt")
+	if err != nil {
+		log.Fatal(err)
 	}
-	emp2 := employee{
-		name:     "Tom",
-		position: "Intern",
-	}
-	emp3 := employee{"Alex", "R&D", 25, "Assistant"} // ok
-	// emp3 := employee{"Alex", "R&D"} – ошибка!!!
-
-	fmt.Println(emp1) // {Alex R&D 25 Assistant}
-	fmt.Println(emp2) // {Tom  0 Intern}
-	fmt.Println(emp3) // {Alex R&D 25 Assistant}
+	fmt.Println("File name:", fileInfo.Name())
+	fmt.Println("Size in bytes:", fileInfo.Size())
+	fmt.Println("Permissions:", fileInfo.Mode())
+	fmt.Println("Last modified:", fileInfo.ModTime())
+	fmt.Println("Is Directory: ", fileInfo.IsDir())
 }

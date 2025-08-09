@@ -1,29 +1,29 @@
 package main
 
-import "fmt"
-
-type employee struct {
-	name     string
-	string   // первое анонимное поле
-	uint8    // второе анонимное поле
-	position string
-}
+import (
+	"fmt"
+	"io"
+	"log"
+	"os"
+)
 
 func main() {
-	emp := employee{
-		name:     "Tom",
-		position: "Intern",
+	file, err := os.Open("pirates.txt")
+	if err != nil {
+		log.Fatal(err)
 	}
-	emp1 := employee{
-		name:     "Alex",
-		position: "Intern",
-		uint8:    17,
-		string:   "R&D",
+	defer file.Close()
+
+	file.WriteString("jgjgjg") // ничего в файл не добавится!!!
+	data := make([]byte, 128)
+	for {
+		length, err := file.Read(data)
+		fmt.Printf("Reading %d byte\n", length)
+		if err == io.EOF { // достигли конца файла?
+			break
+		}
 	}
-	// присваиваем значение анонимному полю
-	emp.uint8 = 22
-	emp.string = "R&D"
-	fmt.Printf("%+v\n", emp1)      //{name:Alex string:R&D uint8:17 position:Intern}
-	fmt.Printf("%+v\n", emp)       // {name:Tom string:R&D uint8:22 position:Intern}
-	fmt.Printf("%+v\n", emp.uint8) // 22 - вывод значения анонимного поля
+	fmt.Println(string(data))
+
+	fmt.Println("Text was read from file")
 }

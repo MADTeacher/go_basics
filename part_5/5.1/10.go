@@ -1,21 +1,15 @@
 package main
 
-import "fmt"
-
-type point struct {
-	x int
-	y int
-}
-
-type shape struct {
-	name   string
-	center point
-}
+import (
+	"fmt"
+	"log"
+	"os"
+)
 
 func main() {
-	myShape := shape{
-		name:   "Cube",
-		center: point{x: 10, y: 6},
+	data, err := os.ReadFile("pirates.txt")
+	if err != nil {
+		log.Fatal(err)
 	}
-	fmt.Printf("%+v\n", myShape) // {name:Cube center:{x:10 y:6}}
+	fmt.Println(string(data))
 }

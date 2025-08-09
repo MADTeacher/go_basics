@@ -1,22 +1,17 @@
 package main
 
-import "fmt"
-
-type employee struct {
-	name           string
-	departmentName string
-	age            uint8
-	position       string
-}
+import (
+	"log"
+	"os"
+)
 
 func main() {
-	emp2 := employee{
-		name:     "Tom",
-		position: "Intern",
+	originalPath := "test.txt"
+	newPath := "../test2.txt" // переместит файл на уровень выше с именем test2.txt
+	// можно также оставить старое имя у перемещаемого файла - test.txt
+	// newPath := "test2.txt" // переименование файла в текущей директории
+	err := os.Rename(originalPath, newPath)
+	if err != nil {
+		log.Fatal(err)
 	}
-	emp2.age = 22
-	emp2.departmentName = "R&D"
-	fmt.Println(emp2) // {Tom R&D 22 Intern}
-	emp2.position = "Engineer"
-	fmt.Println(emp2) // {Tom R&D 22 Engineer}
 }

@@ -2,14 +2,25 @@ package main
 
 import "fmt"
 
+type employee struct {
+	name           string
+	departmentName string
+	age            uint8
+	position       string
+}
+
 func main() {
-	add(3, 5)
-}
+	emp1 := employee{
+		name:           "Alex",
+		age:            25,
+		departmentName: "R&D",
+		position:       "Assistant",
+	}
+	emp2 := employee{
+		name:     "Tom",
+		position: "Intern",
+	}
 
-func add(a int, b int) {
-	fmt.Println(a + b) // 8
+	fmt.Println(emp1) // {Alex R&D 25 Assistant}
+	fmt.Println(emp2) // {Tom  0 Intern}
 }
-
-// func add(a, b int) {
-// 	fmt.Println(a + b)
-// }

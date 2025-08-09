@@ -1,22 +1,20 @@
 package main
 
-import "fmt"
-
-type employee struct {
-	name           string
-	departmentName string
-	age            uint8
-	position       string
-}
+import (
+	"fmt"
+	"log"
+	"os"
+)
 
 func main() {
-	emp2 := employee{
-		name:     "Tom",
-		position: "Intern",
+	pathToFile := "pirates.txt"
+	fileInfo, err := os.Stat(pathToFile)
+	if err != nil {
+		if os.IsNotExist(err) {
+			log.Fatal("File does not exist.")
+			os.Exit(1) // выход  из приложения со статусом 1
+		}
 	}
-	emp2.age = 22
-	emp2.departmentName = "R&D"
-	fmt.Printf("%+v\n", emp2.age) // 22
-	employeeAge := emp2.age
-	fmt.Println(employeeAge) // 22
+	fmt.Println("File does exist!")
+	fmt.Println("File information:", fileInfo)
 }

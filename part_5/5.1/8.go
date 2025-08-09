@@ -1,34 +1,28 @@
 package main
 
-import "fmt"
-
-type employee struct {
-	name string
-	age  uint8
-}
-
-func valueFunc(emp employee) {
-	emp.name = "O_O"
-	fmt.Printf("Copy value: %+v\n", emp)
-}
-
-func pointFunc(emp *employee) {
-	emp.name = "^_^"
-	fmt.Printf("Point to value: %+v\n", emp)
-}
+import (
+	"fmt"
+	"io"
+	"log"
+	"os"
+)
 
 func main() {
-	emp := employee{
-		name: "Tom",
-		age:  45,
+	file, err := os.Open("pirates.txt")
+	if err != nil {
+		log.Fatal(err)
 	}
-	newEmployee := emp
-	newEmployee.age = 22
-	fmt.Printf("newEmployee = %+v\n", newEmployee)
-	fmt.Printf("emp = %+v\n", emp)
+	defer file.Close()
 
-	valueFunc(emp) // передача в функцию по значению
-	fmt.Printf("emp = %+v\n", emp)
-	pointFunc(&emp) // передача в функцию по указателю
-	fmt.Printf("emp = %+v\n", emp)
+	tempData := make([]byte, 32)
+	data := []byte{}
+	for {
+		length, err := file.Read(tempData)
+		fmt.Printf("Reading %d byte\n", length)
+		if err == io.EOF { // достигли конца файла?
+			break
+		}
+		data = append(data, tempData...)
+	}
+	fmt.Println(string(data))
 }

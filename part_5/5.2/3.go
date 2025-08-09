@@ -1,29 +1,48 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+	"os"
+	"path/filepath"
+)
 
-type RUB uint // пользовательский именованный тип RUB
+const tempFileName = "myTempFile.dat"
+const tempDirName = "myTempDir"
 
-const RUB2USD uint = 61
-const RUB2EUR uint = 65
-
-//связываем тип RUB с методом конвертации рублей в доллары
-func (r RUB) convertRUB2USD() uint {
-	return uint(r) / RUB2USD
+func printPath(path string, err error) string {
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("TempDir created with path: ", path)
+	return path
 }
 
-//связываем тип RUB с методом конвертации рублей в евро
-func (r RUB) convertRUB2EUR() uint {
-	return uint(r) / RUB2EUR
-}
+func createdFile(path string) {
+	filepath := filepath.Join(path, tempFileName)
+	myFile, err := os.Create(filepath)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer myFile.Close()
+	fmt.Println("TempFile created with path: ", filepath)
+	fmt.Println()
 
-func (r *RUB) setNewValue(rub RUB) {
-	*r = rub
-	fmt.Printf("В кошельке теперь %d рублей\n", *r)
 }
 
 func main() {
-	var rub RUB = 3475
-	rub.setNewValue(9000)
-	fmt.Printf("В кошельке на самом деле %d рублей\n", rub)
+	os.Mkdir(tempDirName, 0777)
+
+	path := printPath(os.MkdirTemp(tempDirName, "*")) // случайное имя временного каталога
+	createdFile(path)
+
+	path = printPath(os.MkdirTemp(tempDirName, "temp*dir")) // имя с использованием шаблона
+	createdFile(path)
+
+	path = printPath(os.MkdirTemp(tempDirName, "tempdir")) // имя с использованием шаблона
+	createdFile(path)
+	// создание временного каталога со случайным именем
+	// в системной директории для временных файлов
+	path = printPath(os.MkdirTemp("", "*"))
+	createdFile(path)
 }

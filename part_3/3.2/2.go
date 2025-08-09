@@ -2,18 +2,28 @@ package main
 
 import "fmt"
 
+type RUB uint // пользовательский именованный тип RUB
+
+const RUB2USD uint = 61
+const RUB2EUR uint = 65
+
+//связываем тип RUB с методом конвертации рублей в доллары
+func (r RUB) convertRUB2USD() uint {
+	return uint(r) / RUB2USD
+}
+
+//связываем тип RUB с методом конвертации рублей в евро
+func (r RUB) convertRUB2EUR() uint {
+	return uint(r) / RUB2EUR
+}
+
+func (r RUB) setNewValue(rub RUB) {
+	r = rub
+	fmt.Printf("В кошельке теперь %d рублей\n", r)
+}
+
 func main() {
-	array := [4]float64{2.4, 5.6, 8.1, 9.22}
-	myFunc(&array)
-	fmt.Printf("Array in main: %v\n", array)
+	var rub RUB = 3475
+	rub.setNewValue(9000)
+	fmt.Printf("В кошельке на самом деле %d рублей\n", rub)
 }
-
-func myFunc(array *[4]float64) {
-	for i := range array {
-		array[i] += 2.33
-	}
-	fmt.Printf("Array in myFunc: %v\n", *array)
-}
-
-// Array in myFunc: [4.73 7.93 10.43 11.55]
-// Array in main: [4.73 7.93 10.43 11.55]
