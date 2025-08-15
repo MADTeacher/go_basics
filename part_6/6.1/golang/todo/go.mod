@@ -1,6 +1,6 @@
 module golang/todo
 
-go 1.24
+go 1.25
 
 require (
 	github.com/daviddengcn/go-colortext v1.0.0 // indirect
