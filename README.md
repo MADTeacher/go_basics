@@ -1,6 +1,6 @@
 # Репозиторий книги "Основы Go"
 - В главной ветке приведен исходный код [1-го издания книги «Основы Go»](https://boosty.to/madteacher/posts/13ea22f4-e8a0-4949-bbe0-7ed0da854b1c?share=post_link), и курса на Stepik ["Основы Go"](https://stepik.org/a/236054)
-- В ветке [сommunity_edition](https://github.com/MADTeacher/go_basics/tree/сommunity_edition) находится исходный код для бесплатной версии книги [«Основы Go: Community edition»](https://boosty.to/madteacher/posts/fbd0739f-20ba-4a6f-afe8-ac2fee2c8f8f?share=post_link)
+- В ветке [сommunity_edition](https://github.com/MADTeacher/go_basics/tree/сommunity_edition) находится исходный код для бесплатной версии книги [«Основы Go: Community edition»](https://boosty.to/madteacher/posts/ae93a223-6458-4565-8e54-5d89d4335790?share=post_link)
 
 
 ## Автор книги и его тг-канал
