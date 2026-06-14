@@ -19,8 +19,8 @@ func main() {
 	aboutStr := "Tom Hanks is an actor..."
 	actor := Actor{
 		Name:        "Tom Hanks",
-		Age:         65,
-		FilmsAmount: 50,
+        Age:         69,
+        FilmsAmount: 70,
 		AboutActor:  &aboutStr,
 	}
 
