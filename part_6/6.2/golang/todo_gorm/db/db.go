@@ -19,7 +19,7 @@ func NewSQLiteRepository() *SQLiteRepository {
 	rep := &SQLiteRepository{}
 	// Если база данных не существует, то создаем ее
 	if _, err := os.Stat(dbName); os.IsNotExist(err) {
-		// Отквываем соединение с базой данных
+		// Открываем соединение с базой данных
 		db, err = gorm.Open(sqlite.Open(dbName), &gorm.Config{})
 		if err != nil {
 			log.Fatal(err)
@@ -31,7 +31,7 @@ func NewSQLiteRepository() *SQLiteRepository {
 		rep.db = db
 		putDefaultValuesToDB(rep)
 	} else {
-		// Отквываем соединение с базой данных
+		// Открываем соединение с базой данных
 		db, err = gorm.Open(sqlite.Open(dbName), &gorm.Config{})
 		if err != nil {
 			log.Fatal(err)
