@@ -21,7 +21,7 @@ func main() {
 	}
 	fmt.Printf("%+v", movie)
 
-	// записать в файл output.json
+	// Записываем данные из movie в файл output.json
 	data, err = json.MarshalIndent(movie, "", "  ")
 	if err != nil {
 		log.Fatal(err)
