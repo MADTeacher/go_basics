@@ -29,7 +29,7 @@ func main() {
 	// по умолчанию
 	actor := Actor{
 		Name:       "Tom Hanks",
-		Age:        65,
+		Age:        69,
 		AboutActor: &aboutStr,
 	}
 
