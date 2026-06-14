@@ -61,7 +61,7 @@ func (p *ComputerPlayer) makeZoneBasedMove(board *b.Board) (int, int) {
 						foundMoveInZone = true
 						boardCopy := p.copyBoard(board)
 						boardCopy.Board[r][c] = p.Figure
-						// Оцениваем ход испо
+						// Оцениваем возможность совершить ход
 						score := p.evaluateBoardHeuristic(boardCopy, p.Figure)
 
 						// Если найден лучший ход
