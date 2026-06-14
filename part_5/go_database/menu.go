@@ -121,7 +121,7 @@ func (m *Menu) AddUser() {
 	}
 
 	if !try() {
-		fmt.Println("WTF!!!!")
+		fmt.Println("¯\_(ツ)_/¯")
 	}
 }
 
